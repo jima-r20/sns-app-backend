@@ -5,18 +5,18 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { User } from './user.entity';
-import { AuthCredentialsDto } from './dto/auth-credentials.dts';
+import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
+import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(authCredentialDto: AuthCredentialsDto): Promise<void> {
-    const { email, password, displayName, avatar, about } = authCredentialDto;
-
-    const salt = await bcrypt.genSalt();
+  async signUp(signUpCredentialDto: SignUpCredentialsDto): Promise<void> {
+    const { email, password, displayName, avatar, about } = signUpCredentialDto;
 
     const user = this.create();
     user.email = email;
-    user.password = await this.hashPassword(password, salt);
+    user.salt = await bcrypt.genSalt();
+    user.password = await this.hashPassword(password, user.salt);
     user.displayName = displayName;
     user.avatar = avatar;
     user.about = about;
@@ -31,6 +31,19 @@ export class UserRepository extends Repository<User> {
       } else {
         throw new InternalServerErrorException();
       }
+    }
+  }
+
+  async validateUserPassword(
+    signInCredentialsDto: SignInCredentialsDto,
+  ): Promise<string> {
+    const { email, password } = signInCredentialsDto;
+    const user = await this.findOne({ email });
+
+    if (user && (await user.validatePassword(password))) {
+      return user.email;
+    } else {
+      return null;
     }
   }
 
