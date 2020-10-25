@@ -20,4 +20,12 @@ export class UserController {
   ): Promise<{ accessToken: string }> {
     return this.userService.signIn(signInCredentialsDto);
   }
+
+  // ユーザリスト取得
+
+  // ログインプロフィール情報取得
+
+  // プロフィール更新
+
+  // ユーザの削除
 }
