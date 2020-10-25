@@ -1,6 +1,13 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Unique,
+} from 'typeorm';
 
 @Entity()
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,4 +26,10 @@ export class User extends BaseEntity {
 
   @Column()
   about: string;
+
+  @Column()
+  is_active: boolean;
+
+  @Column()
+  is_staff: boolean;
 }
