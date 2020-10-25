@@ -7,7 +7,7 @@ import { JwtPayload } from './jwt-payload.interface';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 
 @Injectable()
-export class AuthService {
+export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
