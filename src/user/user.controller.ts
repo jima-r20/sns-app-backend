@@ -13,6 +13,7 @@ import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { GetUser } from './get-user.decorator';
 import { User } from './user.entity';
+import { UserResponse } from './user-response.interface';
 
 @Controller('user')
 export class UserController {
@@ -21,7 +22,7 @@ export class UserController {
   @Post('signup')
   signUp(
     @Body(ValidationPipe) signUpCredentialsDto: SignUpCredentialsDto,
-  ): Promise<void> {
+  ): Promise<UserResponse> {
     return this.userService.signUp(signUpCredentialsDto);
   }
 
@@ -35,13 +36,25 @@ export class UserController {
   // ユーザリスト取得
   @Get('/profiles')
   @UseGuards(AuthGuard())
-  getUsers(): Promise<User[]> {
+  getUsers(): Promise<UserResponse[]> {
     return this.userService.getUsers();
   }
 
   // ログインプロフィール情報取得
+  @Get('/myprofile')
+  @UseGuards(AuthGuard())
+  getUserById(@GetUser() user: User): Promise<UserResponse> {
+    return this.userService.getUserById(user);
+  }
 
   // プロフィール更新
 
   // ユーザの削除
+
+  // 検証用
+  // @Get('/test')
+  // @UseGuards(AuthGuard())
+  // test(@GetUser() user: User) {
+  //   console.log(user);
+  // }
 }

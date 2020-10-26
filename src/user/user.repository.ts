@@ -7,10 +7,13 @@ import {
 import { User } from './user.entity';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
+import { UserResponse } from './user-response.interface';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(signUpCredentialDto: SignUpCredentialsDto): Promise<void> {
+  async signUp(
+    signUpCredentialDto: SignUpCredentialsDto,
+  ): Promise<UserResponse> {
     const { email, password, displayName, avatar, about } = signUpCredentialDto;
 
     const user = this.create();
@@ -25,6 +28,12 @@ export class UserRepository extends Repository<User> {
 
     try {
       await user.save();
+      return {
+        id: user.id,
+        displayName: user.displayName,
+        avatar: user.avatar,
+        about: user.about,
+      };
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('This email already registered');
@@ -49,9 +58,5 @@ export class UserRepository extends Repository<User> {
 
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
-  }
-
-  async getUsers(): Promise<User[]> {
-    return this.find({ select: ['id', 'displayName', 'avatar', 'about'] });
   }
 }

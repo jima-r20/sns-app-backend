@@ -6,6 +6,7 @@ import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 import { User } from './user.entity';
+import { UserResponse } from './user-response.interface';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,9 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(signUpCredentialsDto: SignUpCredentialsDto): Promise<void> {
+  async signUp(
+    signUpCredentialsDto: SignUpCredentialsDto,
+  ): Promise<UserResponse> {
     return this.userRepository.signUp(signUpCredentialsDto);
   }
 
@@ -36,7 +39,16 @@ export class UserService {
     return { accessToken };
   }
 
-  async getUsers(): Promise<User[]> {
-    return await this.userRepository.getUsers();
+  async getUsers(): Promise<UserResponse[]> {
+    return await this.userRepository.find({
+      select: ['id', 'displayName', 'avatar', 'about'],
+    });
+  }
+
+  async getUserById(user: User): Promise<UserResponse> {
+    return await this.userRepository.findOne({
+      select: ['id', 'displayName', 'avatar', 'about'],
+      where: { id: user.id },
+    });
   }
 }
