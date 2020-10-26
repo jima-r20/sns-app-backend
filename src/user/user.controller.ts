@@ -45,7 +45,7 @@ export class UserController {
   @Get('/myprofile')
   @UseGuards(AuthGuard())
   getUser(@GetUser() user: User): Promise<UserResponse> {
-    return this.userService.getUser(user.id);
+    return this.userService.getUser(user);
   }
 
   // プロフィール更新
