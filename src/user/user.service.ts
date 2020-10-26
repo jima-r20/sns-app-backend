@@ -45,10 +45,31 @@ export class UserService {
     });
   }
 
-  async getUserById(user: User): Promise<UserResponse> {
+  async getUser(id: number): Promise<UserResponse> {
     return await this.userRepository.findOne({
       select: ['id', 'displayName', 'avatar', 'about'],
-      where: { id: user.id },
+      where: { id },
     });
+  }
+
+  async updateUser(
+    id: number,
+    displayName: string,
+    avatar: string,
+    about: string,
+  ): Promise<UserResponse> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    user.displayName = displayName;
+    user.avatar = avatar;
+    user.about = about;
+    await user.save();
+
+    const userResponse: UserResponse = {
+      id: user.id,
+      displayName: user.displayName,
+      avatar: user.avatar,
+      about: user.about,
+    };
+    return userResponse;
   }
 }

@@ -28,12 +28,13 @@ export class UserRepository extends Repository<User> {
 
     try {
       await user.save();
-      return {
+      const userResponse: UserResponse = {
         id: user.id,
         displayName: user.displayName,
         avatar: user.avatar,
         about: user.about,
       };
+      return userResponse;
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('This email already registered');

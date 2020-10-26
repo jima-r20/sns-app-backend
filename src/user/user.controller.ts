@@ -6,6 +6,7 @@ import {
   Get,
   UseGuards,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
@@ -43,11 +44,21 @@ export class UserController {
   // ログインプロフィール情報取得
   @Get('/myprofile')
   @UseGuards(AuthGuard())
-  getUserById(@GetUser() user: User): Promise<UserResponse> {
-    return this.userService.getUserById(user);
+  getUser(@GetUser() user: User): Promise<UserResponse> {
+    return this.userService.getUser(user.id);
   }
 
   // プロフィール更新
+  @Patch('/myprofile')
+  @UseGuards(AuthGuard())
+  updateUser(
+    @GetUser() user: User,
+    @Body('displayName') displayName: string,
+    @Body('avatar') avatar: string,
+    @Body('about') about: string,
+  ): Promise<UserResponse> {
+    return this.userService.updateUser(user.id, displayName, avatar, about);
+  }
 
   // ユーザの削除
 
