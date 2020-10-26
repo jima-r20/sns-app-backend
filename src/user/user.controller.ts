@@ -7,6 +7,9 @@ import {
   UseGuards,
   Req,
   Patch,
+  Delete,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
@@ -49,18 +52,20 @@ export class UserController {
   }
 
   // プロフィール更新
-  @Patch('/myprofile')
+  @Patch('/profiles/:id')
   @UseGuards(AuthGuard())
   updateUser(
     @GetUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
     @Body('displayName') displayName: string,
     @Body('avatar') avatar: string,
     @Body('about') about: string,
   ): Promise<UserResponse> {
-    return this.userService.updateUser(user.id, displayName, avatar, about);
+    return this.userService.updateUser(id, displayName, avatar, about, user);
   }
 
   // ユーザの削除
+  // @Delete('/profiles/:id')
 
   // 検証用
   // @Get('/test')

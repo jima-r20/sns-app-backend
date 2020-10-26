@@ -67,18 +67,23 @@ export class UserService {
     displayName: string,
     avatar: string,
     about: string,
+    user: User,
   ): Promise<UserResponse> {
-    const user = await this.userRepository.findOne({ where: { id } });
-    user.displayName = displayName;
-    user.avatar = avatar;
-    user.about = about;
-    await user.save();
+    if (id !== user.id) {
+      throw new UnauthorizedException('Invalid credentials or NOT match ID');
+    }
+
+    const target = await this.userRepository.findOne({ where: { id } });
+    target.displayName = displayName;
+    target.avatar = avatar;
+    target.about = about;
+    await target.save();
 
     const userResponse: UserResponse = {
-      id: user.id,
-      displayName: user.displayName,
-      avatar: user.avatar,
-      about: user.about,
+      id: target.id,
+      displayName: target.displayName,
+      avatar: target.avatar,
+      about: target.about,
     };
     return userResponse;
   }
