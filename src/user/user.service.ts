@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
-import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from './jwt-payload.interface';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
+import { JwtPayload } from './jwt-payload.interface';
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -33,5 +34,9 @@ export class UserService {
     const accessToken = await this.jwtService.sign(payload);
 
     return { accessToken };
+  }
+
+  async getUsers(): Promise<User[]> {
+    return await this.userRepository.getUsers();
   }
 }

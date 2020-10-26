@@ -1,7 +1,18 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  ValidationPipe,
+  Get,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
+import { GetUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
@@ -22,6 +33,11 @@ export class UserController {
   }
 
   // ユーザリスト取得
+  @Get('/profiles')
+  @UseGuards(AuthGuard())
+  getUsers(): Promise<User[]> {
+    return this.userService.getUsers();
+  }
 
   // ログインプロフィール情報取得
 

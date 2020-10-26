@@ -50,4 +50,8 @@ export class UserRepository extends Repository<User> {
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
+
+  async getUsers(): Promise<User[]> {
+    return this.find({ select: ['id', 'displayName', 'avatar', 'about'] });
+  }
 }
