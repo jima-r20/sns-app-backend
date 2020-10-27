@@ -21,10 +21,10 @@ import { FollowValidationPipe } from './pipe/follow-validation.pipe';
 export class FollowController {
   constructor(private followService: FollowService) {}
 
-  // @Get('follow-list')
-  // getFollows(): Promise<Follow[]> {
-  //   return this.followService.getFollows();
-  // }
+  @Get('follow-list')
+  getFollowList(@GetUser() user: User): Promise<Follow[]> {
+    return this.followService.getFollowList(user);
+  }
 
   @Post('request')
   createFollow(

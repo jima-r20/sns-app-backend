@@ -12,6 +12,12 @@ export class FollowService {
     private followRepository: FollowRepository,
   ) {}
 
+  async getFollowList(user: User): Promise<Follow[]> {
+    return await this.followRepository.find({
+      where: { askFrom: user.id, approved: true },
+    });
+  }
+
   async createFollow(
     createFollowDto: CreateFollowDto,
     user: User,
