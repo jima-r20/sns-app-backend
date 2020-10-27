@@ -7,6 +7,7 @@ import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 import { User } from './user.entity';
 import { UserResponse } from './user-response.interface';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -64,28 +65,10 @@ export class UserService {
 
   async updateUser(
     id: number,
-    displayName: string,
-    avatar: string,
-    about: string,
+    updateUserDto: UpdateUserDto,
     user: User,
   ): Promise<UserResponse> {
-    if (id !== user.id) {
-      throw new UnauthorizedException('Invalid credentials or NOT match ID');
-    }
-
-    const target = await this.userRepository.findOne({ where: { id } });
-    target.displayName = displayName;
-    target.avatar = avatar;
-    target.about = about;
-    await target.save();
-
-    const userResponse: UserResponse = {
-      id: target.id,
-      displayName: target.displayName,
-      avatar: target.avatar,
-      about: target.about,
-    };
-    return userResponse;
+    return this.userRepository.updateUser(id, updateUserDto, user);
   }
 
   async deleteUser(id: number, user: User): Promise<{ id: number }> {

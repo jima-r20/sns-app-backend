@@ -18,6 +18,7 @@ import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { GetUser } from './get-user.decorator';
 import { User } from './user.entity';
 import { UserResponse } from './user-response.interface';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -57,11 +58,9 @@ export class UserController {
   updateUser(
     @GetUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-    @Body('displayName') displayName: string,
-    @Body('avatar') avatar: string,
-    @Body('about') about: string,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
   ): Promise<UserResponse> {
-    return this.userService.updateUser(id, displayName, avatar, about, user);
+    return this.userService.updateUser(id, updateUserDto, user);
   }
 
   // ユーザの削除

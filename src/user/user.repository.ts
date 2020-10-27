@@ -3,11 +3,13 @@ import * as bcrypt from 'bcryptjs';
 import {
   ConflictException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { User } from './user.entity';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
 import { UserResponse } from './user-response.interface';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -59,5 +61,36 @@ export class UserRepository extends Repository<User> {
 
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
+  }
+
+  async updateUser(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    user: User,
+  ): Promise<UserResponse> {
+    if (id !== user.id) {
+      throw new UnauthorizedException('Invalid credentials or NOT match ID');
+    }
+
+    const { displayName, avatar, about } = updateUserDto;
+
+    const target = await this.findOne({ where: { id } });
+    target.displayName = displayName;
+    target.avatar = avatar;
+    target.about = about;
+
+    try {
+      await target.save();
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+
+    const userResponse: UserResponse = {
+      id: target.id,
+      displayName: target.displayName,
+      avatar: target.avatar,
+      about: target.about,
+    };
+    return userResponse;
   }
 }
