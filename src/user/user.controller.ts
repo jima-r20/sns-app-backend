@@ -65,7 +65,14 @@ export class UserController {
   }
 
   // ユーザの削除
-  // @Delete('/profiles/:id')
+  @Delete('/profiles/:id')
+  @UseGuards(AuthGuard())
+  deleteUser(
+    @GetUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ id: number }> {
+    return this.userService.deleteUser(id, user);
+  }
 
   // 検証用
   // @Get('/test')

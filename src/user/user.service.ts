@@ -87,4 +87,12 @@ export class UserService {
     };
     return userResponse;
   }
+
+  async deleteUser(id: number, user: User): Promise<{ id: number }> {
+    if (id !== user.id) {
+      throw new UnauthorizedException('Invalid credentials or NOT match ID');
+    }
+    await this.userRepository.delete({ id });
+    return { id };
+  }
 }
