@@ -26,6 +26,11 @@ export class FollowController {
     return this.followService.getFollowList(user);
   }
 
+  @Get('follower-list')
+  getFollowerList(@GetUser() user: User): Promise<Follow[]> {
+    return this.followService.getFollowerList(user);
+  }
+
   @Post('request')
   createFollow(
     @Body(FollowValidationPipe) createFollowDto: CreateFollowDto,

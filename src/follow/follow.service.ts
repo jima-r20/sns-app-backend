@@ -18,6 +18,12 @@ export class FollowService {
     });
   }
 
+  async getFollowerList(user: User): Promise<Follow[]> {
+    return await this.followRepository.find({
+      where: { askTo: user.id },
+    });
+  }
+
   async createFollow(
     createFollowDto: CreateFollowDto,
     user: User,
