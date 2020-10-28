@@ -15,9 +15,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { FollowService } from './follow.service';
 import { Follow } from './follow.entity';
 import { CreateFollowDto } from './dto/create-follow.dto';
-import { GetUser } from '../user/get-user.decorator';
+import { GetUser } from '../user/decorators/get-user.decorator';
 import { User } from '../user/user.entity';
-import { FollowValidationPipe } from './pipe/follow-validation.pipe';
+import { FollowValidationPipe } from './pipes/follow-validation.pipe';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 
 @Controller('follow')

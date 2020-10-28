@@ -15,9 +15,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { GetUser } from './get-user.decorator';
+import { GetUser } from './decorators/get-user.decorator';
 import { User } from './user.entity';
-import { UserResponse } from './user-response.interface';
+import { UserResponse } from './interfaces/user-response.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')

@@ -8,7 +8,7 @@ import {
 import { User } from './user.entity';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { UserResponse } from './user-response.interface';
+import { UserResponse } from './interfaces/user-response.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @EntityRepository(User)

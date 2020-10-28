@@ -4,9 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { JwtPayload } from './jwt-payload.interface';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { User } from './user.entity';
-import { UserResponse } from './user-response.interface';
+import { UserResponse } from './interfaces/user-response.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
