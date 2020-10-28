@@ -14,6 +14,9 @@ export class FollowValidationPipe implements PipeTransform<any> {
       return value;
     }
 
+    if (value.askFrom) {
+      value.askFrom = parseInt(value.askFrom);
+    }
     if (value.askTo) {
       value.askTo = parseInt(value.askTo);
     }

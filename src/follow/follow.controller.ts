@@ -7,6 +7,7 @@ import {
   ValidationPipe,
   ParseIntPipe,
   ParseBoolPipe,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FollowService } from './follow.service';
@@ -15,6 +16,7 @@ import { CreateFollowDto } from './dto/create-follow.dto';
 import { GetUser } from '../user/get-user.decorator';
 import { User } from '../user/user.entity';
 import { FollowValidationPipe } from './pipe/follow-validation.pipe';
+import { ApproveRequestDto } from './dto/approve-request.dto';
 
 @Controller('follow')
 @UseGuards(AuthGuard())
@@ -42,5 +44,13 @@ export class FollowController {
     @GetUser() user: User,
   ) {
     return this.followService.createFollow(createFollowDto, user);
+  }
+
+  @Patch('request')
+  approveRequest(
+    @Body(FollowValidationPipe) approveRequestDto: ApproveRequestDto,
+    @GetUser() user: User,
+  ): Promise<Follow> {
+    return this.followService.approveRequest(approveRequestDto, user);
   }
 }
