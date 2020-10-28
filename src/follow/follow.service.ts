@@ -1,14 +1,9 @@
-import {
-  Injectable,
-  BadRequestException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FollowRepository } from './follow.repository';
 import { Follow } from './follow.entity';
 import { CreateFollowDto } from './dto/create-follow.dto';
 import { User } from '../user/user.entity';
-import { create } from 'domain';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 
 @Injectable()
@@ -48,5 +43,9 @@ export class FollowService {
     user: User,
   ): Promise<Follow> {
     return this.followRepository.approveRequest(approveRequestDto, user);
+  }
+
+  async deleteFollow(id: number, user: User): Promise<void> {
+    return await this.followRepository.deleteFollow(id, user);
   }
 }

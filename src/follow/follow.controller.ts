@@ -8,6 +8,8 @@ import {
   ParseIntPipe,
   ParseBoolPipe,
   Patch,
+  Delete,
+  Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FollowService } from './follow.service';
@@ -23,22 +25,22 @@ import { ApproveRequestDto } from './dto/approve-request.dto';
 export class FollowController {
   constructor(private followService: FollowService) {}
 
-  @Get('follow-list')
+  @Get('/follow-list')
   getFollowList(@GetUser() user: User): Promise<Follow[]> {
     return this.followService.getFollowList(user);
   }
 
-  @Get('follower-list')
+  @Get('/follower-list')
   getFollowerList(@GetUser() user: User): Promise<Follow[]> {
     return this.followService.getFollowerList(user);
   }
 
-  @Get('friends-list')
+  @Get('/friends-list')
   getFriendsList(@GetUser() user: User): Promise<Follow[]> {
     return this.followService.getFriendsList(user);
   }
 
-  @Post('request')
+  @Post('/request')
   createFollow(
     @Body(FollowValidationPipe) createFollowDto: CreateFollowDto,
     @GetUser() user: User,
@@ -46,11 +48,19 @@ export class FollowController {
     return this.followService.createFollow(createFollowDto, user);
   }
 
-  @Patch('request')
+  @Patch('/request')
   approveRequest(
     @Body(FollowValidationPipe) approveRequestDto: ApproveRequestDto,
     @GetUser() user: User,
   ): Promise<Follow> {
     return this.followService.approveRequest(approveRequestDto, user);
+  }
+
+  @Delete('/request/:id')
+  deleteFollow(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.followService.deleteFollow(id, user);
   }
 }

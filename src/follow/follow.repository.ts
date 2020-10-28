@@ -6,6 +6,7 @@ import {
   ConflictException,
   InternalServerErrorException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 
@@ -39,8 +40,6 @@ export class FollowRepository extends Repository<Follow> {
   ): Promise<Follow> {
     const { askFrom, approved } = approveRequestDto;
 
-    console.log(approveRequestDto);
-
     if (!approved) {
       throw new BadRequestException();
     }
@@ -51,12 +50,28 @@ export class FollowRepository extends Repository<Follow> {
     if (followReq.approved) {
       throw new BadRequestException('This request already approved');
     }
-    followReq.approved = true;
+    followReq.approved = approved;
 
     try {
       return await followReq.save();
     } catch (error) {
       throw new InternalServerErrorException();
     }
+  }
+
+  async deleteFollow(id: number, user: User): Promise<void> {
+    const found = await this.findOne({
+      where: { id },
+    });
+    if (!found) {
+      throw new NotFoundException(`Follow with ID "${id}" not found`);
+    }
+    if (found.askFrom !== user.id) {
+      throw new BadRequestException(
+        'Cannot delete because the askFrom does not match userId',
+      );
+    }
+
+    await this.delete({ id, askFrom: user.id });
   }
 }
