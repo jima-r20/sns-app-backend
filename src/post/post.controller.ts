@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   ValidationPipe,
+  Get,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostService } from './post.service';
@@ -16,6 +17,11 @@ import { User } from '../user/user.entity';
 @UseGuards(AuthGuard())
 export class PostController {
   constructor(private postService: PostService) {}
+
+  @Get()
+  getPosts(): Promise<PostEntity[]> {
+    return this.postService.getPosts();
+  }
 
   @Post()
   createPost(

@@ -22,4 +22,7 @@ export class Post extends BaseEntity {
     { eager: false },
   )
   postFrom: PostUser;
+
+  // @Column()
+  // postFromId: number;
 }
