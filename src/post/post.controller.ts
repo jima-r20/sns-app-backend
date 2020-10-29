@@ -27,6 +27,11 @@ export class PostController {
     return this.postService.getPosts();
   }
 
+  @Get('/myposts')
+  getUserPosts(@GetUser() user: User): Promise<PostEntity[]> {
+    return this.postService.getUserPosts(user);
+  }
+
   @Get('/:id')
   getPost(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
     return this.postService.getPost(id);

@@ -29,6 +29,19 @@ export class PostRepository extends Repository<Post> {
     }
   }
 
+  async getUserPosts(user: User): Promise<Post[]> {
+    const query = await this.findWithInnerJoin();
+
+    try {
+      const posts = query
+        .where('post.postFrom.id = :userId', { userId: user.id })
+        .getMany();
+      return posts;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   async getPost(id: number): Promise<Post> {
     const query = await this.findWithInnerJoin();
 

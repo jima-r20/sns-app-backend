@@ -21,6 +21,10 @@ export class PostService {
     return this.postRepository.getPosts();
   }
 
+  async getUserPosts(user: User): Promise<Post[]> {
+    return this.postRepository.getUserPosts(user);
+  }
+
   async getPost(id: number): Promise<Post> {
     return this.postRepository.getPost(id);
   }
