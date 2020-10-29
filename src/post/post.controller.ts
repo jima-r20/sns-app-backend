@@ -7,6 +7,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostService } from './post.service';
@@ -36,5 +37,14 @@ export class PostController {
     @GetUser() user: User,
   ): Promise<PostEntity> {
     return this.postService.createPost(createPostDto, user);
+  }
+
+  @Patch('/:id')
+  editPost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) createPostDto: CreatePostDto,
+    @GetUser() user: User,
+  ): Promise<PostEntity> {
+    return this.postService.editPost(id, createPostDto, user);
   }
 }
