@@ -17,6 +17,10 @@ export class PostService {
     return this.postRepository.getPosts();
   }
 
+  async getPost(id: number): Promise<Post> {
+    return this.postRepository.getPost(id);
+  }
+
   async createPost(createPostDto: CreatePostDto, user: User): Promise<Post> {
     return this.postRepository.createPost(createPostDto, user);
   }

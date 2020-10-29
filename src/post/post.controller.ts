@@ -5,6 +5,8 @@ import {
   Body,
   ValidationPipe,
   Get,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostService } from './post.service';
@@ -21,6 +23,11 @@ export class PostController {
   @Get()
   getPosts(): Promise<PostEntity[]> {
     return this.postService.getPosts();
+  }
+
+  @Get('/:id')
+  getPost(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
+    return this.postService.getPost(id);
   }
 
   @Post()

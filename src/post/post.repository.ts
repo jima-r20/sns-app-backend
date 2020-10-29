@@ -1,4 +1,4 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 import { Post } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { User } from '../user/user.entity';
@@ -6,11 +6,8 @@ import { InternalServerErrorException } from '@nestjs/common';
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
-  async getPosts(): Promise<Post[]> {
-    // const posts = await this.postRepository.find({
-    //   relations: ['postFrom'],
-    // });
-    const query = await this.createQueryBuilder('post')
+  async findWithInnerJoin(): Promise<SelectQueryBuilder<Post>> {
+    return await this.createQueryBuilder('post')
       .select([
         'post',
         'postFrom.id',
@@ -19,10 +16,25 @@ export class PostRepository extends Repository<Post> {
         'postFrom.about',
       ])
       .innerJoin('post.postFrom', 'postFrom');
+  }
+
+  async getPosts(): Promise<Post[]> {
+    const query = await this.findWithInnerJoin();
 
     try {
       const posts = query.getMany();
       return posts;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getPost(id: number): Promise<Post> {
+    const query = await this.findWithInnerJoin();
+
+    try {
+      const post = query.where('post.id = :id', { id }).getOne();
+      return post;
     } catch (error) {
       throw new InternalServerErrorException();
     }
