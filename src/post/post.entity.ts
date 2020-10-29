@@ -23,6 +23,6 @@ export class Post extends BaseEntity {
   )
   postFrom: PostUser;
 
-  // @Column()
-  // postFromId: number;
+  @Column()
+  postFromId: number;
 }

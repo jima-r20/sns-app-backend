@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostService } from './post.service';
@@ -46,5 +47,13 @@ export class PostController {
     @GetUser() user: User,
   ): Promise<PostEntity> {
     return this.postService.editPost(id, createPostDto, user);
+  }
+
+  @Delete('/:id')
+  deletePost(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.postService.deletePost(id, user);
   }
 }

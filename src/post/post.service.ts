@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostRepository } from './post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -33,14 +37,23 @@ export class PostService {
     const { content } = createPostDto;
     const post = await this.getPost(id);
 
-    if (user.id !== post.postFrom.id) {
-      throw new UnauthorizedException(
-        'Cannot edit this post because it is owned by a different person',
-      );
+    if (user.id !== post.postFromId) {
+      throw new NotFoundException(`Post with ID "${id}" not found`);
     }
 
     post.content = content;
     await post.save();
     return post;
+  }
+
+  async deletePost(id: number, user: User): Promise<void> {
+    const result = await this.postRepository.delete({
+      id,
+      postFromId: user.id,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Post with ID "${id}" not found`);
+    }
   }
 }
