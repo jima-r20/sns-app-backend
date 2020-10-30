@@ -12,6 +12,12 @@ export class DmService {
     private dmRepository: DmRepository,
   ) {}
 
+  async getDmInbox(user: User): Promise<Dm[]> {
+    return await this.dmRepository.find({
+      where: { receiver: user.id },
+    });
+  }
+
   async createDm(createDmDto: CreateDmDto, user: User): Promise<Dm> {
     if (createDmDto.receiver === user.id) {
       throw new BadRequestException('Cannot send DM to myself');

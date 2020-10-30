@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { DmService } from './dm.service';
 import { GetUser } from '../user/decorators/get-user.decorator';
@@ -11,6 +11,11 @@ import { Dm } from './Dm.entity';
 @UseGuards(AuthGuard())
 export class DmController {
   constructor(private dmService: DmService) {}
+
+  @Get('/inbox')
+  getDmInbox(@GetUser() user: User): Promise<Dm[]> {
+    return this.dmService.getDmInbox(user);
+  }
 
   @Post('/message')
   createDm(
