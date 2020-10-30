@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DmRepository } from './dm.repository';
 import { CreateDmDto } from './dto/create-dm.dto';
@@ -13,6 +13,9 @@ export class DmService {
   ) {}
 
   async createDm(createDmDto: CreateDmDto, user: User): Promise<Dm> {
+    if (createDmDto.receiver === user.id) {
+      throw new BadRequestException('Cannot send DM to myself');
+    }
     return this.dmRepository.createDm(createDmDto, user);
   }
 }

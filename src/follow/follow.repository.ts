@@ -18,10 +18,6 @@ export class FollowRepository extends Repository<Follow> {
   ): Promise<Follow> {
     const { askTo, approved } = createFollowDto;
 
-    if (user.id === askTo) {
-      throw new ConflictException('Cannot send follow request to myself');
-    }
-
     const follow = this.create();
     follow.askFrom = user.id;
     follow.askTo = askTo;

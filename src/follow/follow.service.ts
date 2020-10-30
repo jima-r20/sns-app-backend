@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FollowRepository } from './follow.repository';
 import { Follow } from './follow.entity';
@@ -35,6 +35,9 @@ export class FollowService {
     createFollowDto: CreateFollowDto,
     user: User,
   ): Promise<Follow> {
+    if (createFollowDto.askTo === user.id) {
+      throw new BadRequestException('Cannot send follow request to myself');
+    }
     return this.followRepository.createFollow(createFollowDto, user);
   }
 
