@@ -32,6 +32,11 @@ export class PostController {
     return this.postService.getUserPosts(user);
   }
 
+  @Get('/friend-posts/:id')
+  getFriendPosts(@Param('id', ParseIntPipe) id: number): Promise<PostEntity[]> {
+    return this.postService.getFriendPosts(id);
+  }
+
   @Get('/:id')
   getPost(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
     return this.postService.getPost(id);

@@ -29,12 +29,12 @@ export class PostRepository extends Repository<Post> {
     }
   }
 
-  async getUserPosts(user: User): Promise<Post[]> {
+  async getPostsById(id: number): Promise<Post[]> {
     const query = await this.findWithInnerJoin();
 
     try {
       const posts = query
-        .where('post.postFrom.id = :userId', { userId: user.id })
+        .where('post.postFromId = :userId', { userId: id })
         .getMany();
       return posts;
     } catch (error) {

@@ -22,7 +22,11 @@ export class PostService {
   }
 
   async getUserPosts(user: User): Promise<Post[]> {
-    return this.postRepository.getUserPosts(user);
+    return this.postRepository.getPostsById(user.id);
+  }
+
+  async getFriendPosts(id: number): Promise<Post[]> {
+    return this.postRepository.getPostsById(id);
   }
 
   async getPost(id: number): Promise<Post> {
