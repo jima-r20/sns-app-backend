@@ -5,7 +5,6 @@ import {
   ValidationPipe,
   Get,
   UseGuards,
-  Req,
   Patch,
   Delete,
   Param,
@@ -15,10 +14,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { SignUpCredentialsDto } from './dto/signup-credentials.dts';
 import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { GetUser } from './decorators/get-user.decorator';
-import { User } from './user.entity';
-import { UserResponse } from './interfaces/user-response.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUser } from './decorators/get-user.decorator';
+import { UserResponse } from './interfaces/user-response.interface';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
@@ -72,11 +71,4 @@ export class UserController {
   ): Promise<{ id: number }> {
     return this.userService.deleteUser(id, user);
   }
-
-  // 検証用
-  // @Get('/test')
-  // @UseGuards(AuthGuard())
-  // test(@GetUser() user: User) {
-  //   console.log(user);
-  // }
 }

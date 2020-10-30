@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostController } from './post.controller';
 import { PostService } from './post.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostRepository } from './post.repository';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostRepository]), UserModule],

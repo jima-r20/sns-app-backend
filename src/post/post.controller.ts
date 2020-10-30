@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostService } from './post.service';
-import { CreatePostDto } from './dto/create-post.dto';
 import { Post as PostEntity } from './post.entity';
+import { CreatePostDto } from './dto/create-post.dto';
 import { GetUser } from '../user/decorators/get-user.decorator';
 import { User } from '../user/user.entity';
 

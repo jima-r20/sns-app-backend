@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FollowRepository } from './follow.repository';
 import { Follow } from './follow.entity';
 import { CreateFollowDto } from './dto/create-follow.dto';
-import { User } from '../user/user.entity';
 import { ApproveRequestDto } from './dto/approve-request.dto';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class FollowService {

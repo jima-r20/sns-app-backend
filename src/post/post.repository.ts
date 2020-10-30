@@ -1,8 +1,8 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 import { Post } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { User } from '../user/user.entity';
-import { InternalServerErrorException } from '@nestjs/common';
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {

@@ -1,11 +1,11 @@
 import { Controller, UseGuards, Post, Body, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { DmService } from './dm.service';
-import { GetUser } from '../user/decorators/get-user.decorator';
-import { User } from '../user/user.entity';
+import { Dm } from './dm.entity';
 import { DmValidationPipe } from './pipes/dm-validation.pipe';
 import { CreateDmDto } from './dto/create-dm.dto';
-import { Dm } from './Dm.entity';
+import { User } from '../user/user.entity';
+import { GetUser } from '../user/decorators/get-user.decorator';
 
 @Controller('dm')
 @UseGuards(AuthGuard())

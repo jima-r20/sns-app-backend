@@ -2,8 +2,8 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DmRepository } from './dm.repository';
 import { CreateDmDto } from './dto/create-dm.dto';
+import { Dm } from './dm.entity';
 import { User } from '../user/user.entity';
-import { Dm } from './Dm.entity';
 
 @Injectable()
 export class DmService {

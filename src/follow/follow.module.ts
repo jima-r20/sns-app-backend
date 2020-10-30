@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { FollowController } from './follow.controller';
 import { FollowService } from './follow.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { FollowRepository } from './follow.repository';
 import { UserModule } from '../user/user.module';
 

@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { Post } from 'src/post/post.entity';
+import { Post } from '../post/post.entity';
 
 @Entity()
 @Unique(['email'])
