@@ -14,7 +14,7 @@ export class DmService {
 
   async getDmInbox(user: User): Promise<Dm[]> {
     return await this.dmRepository.find({
-      where: { receiver: user.id },
+      where: [{ receiver: user.id }, { sender: user.id }],
     });
   }
 
