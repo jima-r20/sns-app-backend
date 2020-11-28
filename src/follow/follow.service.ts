@@ -27,7 +27,10 @@ export class FollowService {
 
   async getFriendsList(user: User): Promise<Follow[]> {
     return await this.followRepository.find({
-      where: { askFrom: user.id, approved: true },
+      where: [
+        { askFrom: user.id, approved: true },
+        { askTo: user.id, approved: true },
+      ],
     });
   }
 
