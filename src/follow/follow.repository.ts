@@ -36,15 +36,18 @@ export class FollowRepository extends Repository<Follow> {
   ): Promise<Follow> {
     const { askFrom, approved } = approveRequestDto;
 
-    if (!approved) {
-      throw new BadRequestException();
-    }
+    // if (!approved) {
+    //   throw new BadRequestException();
+    // }
 
     const followReq = await this.findOne({
       where: { askFrom, askTo: user.id },
     });
-    if (followReq.approved) {
-      throw new BadRequestException('This request already approved');
+    if (
+      (followReq.approved && approved) ||
+      (!followReq.approved && !approved)
+    ) {
+      throw new BadRequestException();
     }
     followReq.approved = approved;
 
