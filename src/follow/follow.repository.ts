@@ -34,15 +34,31 @@ export class FollowRepository extends Repository<Follow> {
     approveRequestDto: ApproveRequestDto,
     user: User,
   ): Promise<Follow> {
-    const { askFrom, approved } = approveRequestDto;
+    /* 
+      approvedをtrueもしくはfalseに変更するための処理 
+      askFromが自身のときと、askToが自身のときでの場合わけを以下で行っている
+      最終的な処理内容は同じ
+    */
+    const { askFrom, askTo, approved } = approveRequestDto;
+    if (askFrom === undefined && askTo === undefined) {
+      throw new InternalServerErrorException();
+    }
 
-    // if (!approved) {
-    //   throw new BadRequestException();
-    // }
+    let followReq!: Follow;
+    if (askFrom !== undefined) {
+      // askFromに相手ユーザのIDが入っている場合
+      followReq = await this.findOne({
+        where: { askFrom, askTo: user.id },
+      });
+    } else if (askTo !== undefined) {
+      // askToに相手ユーザのIDが入っている場合
+      followReq = await this.findOne({
+        where: { askFrom: user.id, askTo },
+      });
+    } else {
+      throw new BadRequestException();
+    }
 
-    const followReq = await this.findOne({
-      where: { askFrom, askTo: user.id },
-    });
     if (
       (followReq.approved && approved) ||
       (!followReq.approved && !approved)

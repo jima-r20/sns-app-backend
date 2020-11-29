@@ -29,7 +29,7 @@ export class FollowService {
     return await this.followRepository.find({
       where: [
         { askFrom: user.id, approved: true },
-        { askTo: user.id, approved: true },
+        // { askTo: user.id, approved: true },
       ],
     });
   }
