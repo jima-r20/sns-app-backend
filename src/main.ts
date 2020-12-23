@@ -7,17 +7,10 @@ async function bootstrap() {
   const serverConfig = config.get('server');
 
   if (process.env.NODE_ENV === 'development') {
-    app
-      .enableCors
-      //   {
-      //   origin: '*',
-      //   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept'
-      // }
-      ();
+    app.enableCors();
+  } else {
+    app.enableCors({ origin: serverConfig.origin });
   }
-  // else {
-  //   app.enableCors({ origin: serverConfig.origin });
-  // }
 
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port);
