@@ -1,2 +1,5 @@
+server:
+  origin: http://sns-app-frontend.s3-website-ap-northeast-1.amazonaws.com
+
 db:
   synchronize: false
